@@ -9,9 +9,9 @@ macro(set_as_project)
 
     #add files
     FILE(GLOB CPP_FILES "*.cpp")
-    FILE(GLOB HEADER_FILES "*.h")
+    FILE(GLOB HEADER_FILES "*.h" "*.hpp")
     FILE(GLOB HEADER_HPP_FILES "*.hpp")
-    add_executable(${ProjectId} "${CPP_FILES}")
+    add_executable(${ProjectId} "${CPP_FILES}" "${HEADER_FILES}")
 
     message("Project : ${CMAKE_PROJECT_NAME} added")
 endmacro()
