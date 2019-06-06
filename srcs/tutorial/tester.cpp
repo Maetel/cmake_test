@@ -3,8 +3,10 @@
 #include <iostream>
 #include "testheader1.h"
 #include "testheader2.hpp"
+#include "Eigen/Dense"
 
 int main(){
+
 
     std::cout<< "Hello CMake!"<<std::endl;
 
