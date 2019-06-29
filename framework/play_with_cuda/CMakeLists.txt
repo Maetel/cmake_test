@@ -1,0 +1,1 @@
+set_as_cuda_project()
