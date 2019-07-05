@@ -31,6 +31,15 @@ if(USE_CUDA)
     endif()
 endif()
 
+#JPEG
+set(JPEG_VERSION "6b")
+set(JPEG_SRC "${3RD_PARTY}/libjpeg/jpeg-${JPEG_VERSION}")
+
+#OpenCL
+set(OpenCL_VERSION "1.2")
+set(OpenCL_INCLUDE "${3RD_PARTY}/OpenCL/OpenCL${OpenCL_VERSION}/include")
+set(OpenCL_STATIC_x64 "${3RD_PARTY}/OpenCL/OpenCL${OpenCL_VERSION}/lib/x64/OpenCL.lib")
+set(OpenCL_STATIC_x86 "${3RD_PARTY}/OpenCL/OpenCL${OpenCL_VERSION}/lib/Win32/OpenCL.lib")
 ####################################################################
 #macros
 
@@ -98,6 +107,13 @@ macro(set_as_lib)
     message("${LIB_TYPE} Library : ${current_project} added")
 endmacro()
 
+macro(set_as_library)
+    set_as_lib()
+endmacro(set_as_library)
+
+########################################################################################################
+###########LINK###########
+
 macro(link_eigen)
     include_directories("${EIGEN_SRC}")
 endmacro()
@@ -105,6 +121,37 @@ endmacro()
 #macro(link_cuda)
 #    enable_language(CUDA)
 #endmacro()
+
+macro(link_jpg)
+    #message("${current_project} : link_jpg is muted now")
+    FILE(GLOB jpeg_srcs "${JPEG_SRC}/*.c")
+    #add_executable(${current_project} jpeg_srcs)
+    #add_library(${current_project} SHARED jpeg_srcs)
+    include_directories(${current_project} JPEG_SRC)
+endmacro()
+
+macro(link_jpeg)
+    link_jpg()
+endmacro()
+
+macro(link_opencl)
+    find_package(OpenCL REQUIRED)
+    include_directories(${current_project} ${OpenCL_INCLUDE})
+    target_link_libraries(${current_project} ${OpenCL_STATIC_x64})
+    #if(OpenCL_FOUND)
+    #message("OpenCL Found")
+    #    include_directories(${current_project} ${OpenCL_INCLUDE_DIRS})
+    #    target_link_libraries(${current_project} ${OpenCL_LIBRARIES})
+    #endif()
+    #message("OpenCL_INCLUDE_DIRS ${OpenCL_INCLUDE_DIRS}")
+    #message("OpenCL_LIBRARIES ${OpenCL_LIBRARIES}")
+
+    message("OpenCL_INCLUDE ${OpenCL_INCLUDE}")
+    #message("OpenCL_STATIC_x64 ${OpenCL_STATIC_x64}")
+    message("${current_project} : OpenCL Linked")
+endmacro()
+
+########################################################################################################
 
 macro(set_as_cuda_lib)
     #set project
