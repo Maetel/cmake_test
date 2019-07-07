@@ -40,6 +40,10 @@ set(OpenCL_VERSION "1.2")
 set(OpenCL_INCLUDE "${3RD_PARTY}/OpenCL/OpenCL${OpenCL_VERSION}/include")
 set(OpenCL_STATIC_x64 "${3RD_PARTY}/OpenCL/OpenCL${OpenCL_VERSION}/lib/x64/OpenCL.lib")
 set(OpenCL_STATIC_x86 "${3RD_PARTY}/OpenCL/OpenCL${OpenCL_VERSION}/lib/Win32/OpenCL.lib")
+
+#CImg
+set(CImg_VERSION "2.6.7")
+set(CImg_INCLUDE "${3RD_PARTY}/CImg/CImg-${CImg_VERSION}")
 ####################################################################
 #macros
 
@@ -135,9 +139,11 @@ macro(link_jpeg)
 endmacro()
 
 macro(link_opencl)
-    find_package(OpenCL REQUIRED)
+    
     include_directories(${current_project} ${OpenCL_INCLUDE})
     target_link_libraries(${current_project} ${OpenCL_STATIC_x64})
+
+    #find_package(OpenCL REQUIRED)
     #if(OpenCL_FOUND)
     #message("OpenCL Found")
     #    include_directories(${current_project} ${OpenCL_INCLUDE_DIRS})
@@ -149,6 +155,10 @@ macro(link_opencl)
     message("OpenCL_INCLUDE ${OpenCL_INCLUDE}")
     #message("OpenCL_STATIC_x64 ${OpenCL_STATIC_x64}")
     message("${current_project} : OpenCL Linked")
+endmacro()
+
+macro(link_cimg)
+    include_directories(${current_project} ${CImg_INCLUDE})
 endmacro()
 
 ########################################################################################################
