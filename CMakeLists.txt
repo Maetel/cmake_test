@@ -32,8 +32,11 @@ if(USE_CUDA)
 endif()
 
 #JPEG
-set(JPEG_VERSION "6b")
+set(JPEG_VERSION "9c")
 set(JPEG_SRC "${3RD_PARTY}/libjpeg/jpeg-${JPEG_VERSION}")
+#http://www.ijg.org/
+set(JPEG_RW_VERSION "1.0.1")
+set(JPEG_RW_SRC "${3RD_PARTY}/JPEGReaderWriter/JPEGReaderWriter-${JPEG_RW_VERSION}")
 
 #OpenCL
 set(OpenCL_VERSION "1.2")
@@ -128,10 +131,11 @@ endmacro()
 
 macro(link_jpg)
     #message("${current_project} : link_jpg is muted now")
-    FILE(GLOB jpeg_srcs "${JPEG_SRC}/*.c")
+    #FILE(GLOB jpeg_srcs "${JPEG_SRC}/*.c")
     #add_executable(${current_project} jpeg_srcs)
     #add_library(${current_project} SHARED jpeg_srcs)
-    include_directories(${current_project} JPEG_SRC)
+    include_directories(${current_project} ${JPEG_SRC})
+    include_directories(${current_project} ${JPEG_RW_SRC})
 endmacro()
 
 macro(link_jpeg)
