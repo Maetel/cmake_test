@@ -47,6 +47,15 @@ set(OpenCL_STATIC_x86 "${3RD_PARTY}/OpenCL/OpenCL${OpenCL_VERSION}/lib/Win32/Ope
 #CImg
 set(CImg_VERSION "2.6.7")
 set(CImg_INCLUDE "${3RD_PARTY}/CImg/CImg-${CImg_VERSION}")
+
+#Boost
+set(BOOST_VERSION "1.71.0")
+set(BOOST_VERSION_REPLACED "")
+STRING(REPLACE "." "_" BOOST_VERSION_REPLACED ${BOOST_VERSION})
+set(BOOST_DIR "C:/work/srcs/boost")
+set(BOOST_INCLUDE "${BOOST_DIR}/boost_${BOOST_VERSION_REPLACED}")
+set(BOOST_LIB_DIR "${BOOST_INCLUDE}/libs")
+
 ####################################################################
 #macros
 
@@ -164,6 +173,13 @@ endmacro()
 macro(link_cimg)
     include_directories(${current_project} ${CImg_INCLUDE})
 endmacro()
+
+macro(link_boost)
+    include_directories(${current_project} ${BOOST_INCLUDE})
+    target_link_libraries(${current_project} STATIC ${BOOST_LIB_DIR})
+endmacro()
+
+
 
 ########################################################################################################
 
