@@ -56,6 +56,10 @@ set(BOOST_DIR "C:/work/srcs/boost")
 set(BOOST_INCLUDE "${BOOST_DIR}/boost_${BOOST_VERSION_REPLACED}")
 set(BOOST_LIB_DIR "${BOOST_INCLUDE}/libs")
 
+#Qt5
+set(QT5_VERSION "5.12.5")
+set(QT5_CMAKE_PATH C:/Qt/${QT5_VERSION}/msvc2017_64/lib/cmake)
+
 ####################################################################
 #macros
 
@@ -80,6 +84,53 @@ macro(set_as_project)
     add_executable(${current_project} ${current_project_srcs})
 
     message("Project : ${current_project} added")
+endmacro()
+
+macro(set_as_qt_project)
+    
+    #set project
+    get_filename_component(ProjectId ${CMAKE_CURRENT_LIST_DIR} NAME)
+    string(REPLACE " " "_" ProjectId ${ProjectId})
+    set(current_project ${ProjectId})
+    
+    if(USE_CUDA)
+        project(${current_project} CUDA CXX)
+    else()
+        project(${current_project} CXX)
+    endif()
+
+    #find files
+    FILE(GLOB project_headers "*.h" "*.hpp")
+    FILE(GLOB project_srcs "*.c" "*.cpp")
+
+    #link qt here
+    set(QT5_MODUL_PATH ${QT5_CMAKE_PATH})
+    set(Qt5_DIR "${QT5_MODUL_PATH}/Qt5")
+    #set(QT_QMAKE_EXECUTABLE "C:/Qt/5.12.5/msvc2017_64/bin/qmake.exe")
+    #set(Qt5Core_DIR "${QT5_MODUL_PATH}/Qt5Core")
+    #set(Qt5Widgets_DIR "${QT5_MODUL_PATH}/Qt5Widgets")
+    #set(Qt5Gui_DIR "${QT5_MODUL_PATH}/Qt5Gui")
+
+    find_package(Qt5 REQUIRED COMPONENTS Core Widgets Gui)
+    #find_package(Qt5Core REQUIRED)
+    #find_package(Qt5Widgets REQUIRED)
+    #find_package( REQUIRED)
+    #qt5_wrap_ui(project_headers_wrapped ${project_ui})
+    qt5_wrap_cpp(project_sources_moc ${project_headers})
+
+    #add to project
+    add_executable(${current_project} 
+        ${project_headers}
+        ${project_srcs}
+        ${project_sources_moc}
+        )
+    target_link_libraries(${current_project}
+        PUBLIC
+        Qt5::Core
+        Qt5::Widgets
+    )
+
+    message("Qt5 Project : ${current_project} added")
 endmacro()
 
 macro(set_as_CUDA_project)
